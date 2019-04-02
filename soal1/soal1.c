@@ -10,19 +10,21 @@ pthread_t tid[101]; //inisialisasi array untuk menampung thread
 
 void* factoriul(void *arg)
 {
-	int c, fact = 1;
-	for (c = arg; c >= 1; c--) 
+	long c;
+	unsigned long long fact = 1;
+	for (c = (long) arg; c >= 1; c--) 
 	{
-		fact = fact * c;
+		fact = (unsigned long long) fact * c;
 	}
-	printf("%d! = %d\n", arg, fact);
+	c = (long) arg;
+	printf("%ld! = %llu\n", c, fact);
 	return NULL;
 }
 
 int main(int argc, char *argv[])
 {
-	int i = 0, input, factarr[100] = {};
-	int err;
+	int i = 0, input, err;
+	long factarr[100] = {};
 	char *ptr;
 	//input masukkan segera ke array
 	for(i = 0; i < argc - 1; i++)
@@ -49,7 +51,7 @@ int main(int argc, char *argv[])
 	
 	for(i = 0; i < argc - 1; i++)
 	{
-		err = pthread_create(&(tid[i]), NULL, factoriul, factarr[i]); //membuat thread
+		err = pthread_create(&(tid[i]), NULL, factoriul, (void*)factarr[i]); //membuat thread
 		if(err != 0) //cek error
 		{
 			printf("\n can't create thread : [%s]",strerror(err));
