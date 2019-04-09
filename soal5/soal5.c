@@ -10,7 +10,7 @@
 #include <sys/shm.h>
 
 pthread_t tid[6]; //inisialisasi array untuk menampung thread
-int nyawa, lapar, higen, fstock, bstat, status, inputan, mxn, mxl, mxh, mxf;
+int nyawa, lapar, higen, fstock, bstat, status = 1, inputan, mxn, mxl, mxh, mxf;
 char c;
 
 void* masuk()
@@ -38,7 +38,10 @@ void* masuk()
     in the non-canonical mode*/
     while((c=getchar()))      
     {
-    	switch(c)
+    	if(status <= 0) break;
+    	else
+    	{
+    		switch(c)
 			{
 				case '1':
 					inputan = 1;
@@ -59,6 +62,8 @@ void* masuk()
 					inputan = 0;
 					break;
 			}
+		}
+    	
 	}
                          
 
@@ -70,10 +75,13 @@ void* pemandian(void *arg)
 {
 	while(1)
 	{
-		
-		sleep(1);
-		if(bstat <= 0) bstat = 0;
-		else bstat--;
+		if(status <= 0) break;
+		else
+		{
+			sleep(1);
+			if(bstat <= 0) bstat = 0;
+			else bstat--;	
+		}
 	}
 }
 
@@ -165,34 +173,38 @@ void* standby(void *arg)
 void* battle(void *arg)
 {
 	int pilihan, enmh = 100;
-	while(enmh != 0 || nyawa != 0)
+	while(enmh > 0 || nyawa > 0)
 	{
 		system("clear");
 		printf("Battle Mode\n");
-		printf("Monster's Health: %d'\n", enmh);
-		printf("Enemy's Health: %d'\n", nyawa);
+		printf("Monster's Health: %d'\n", nyawa);
+		printf("Enemy's Health: %d'\n", enmh);
 		printf("\nChoices\n");
 		printf("1. Attack\n");
 		printf("2. Run\n");
-		switch(inputan)
+		if(enmh <= 0 || nyawa <= 0) status = 1;
+		else
 		{
-			case 1:
-				inputan = 0;
-				enmh -= 20;
-				if(enmh != 0) 
-				{
-					system("clear");
-					printf("Musuh melawan!\n");
-					sleep(1);
-					nyawa -= 20;
-					printf("Player kena!\n");
-				}
-				break;
-			case 2:
-				status = 1;
-				break;
-			default:
-				break;
+			switch(inputan)
+			{
+				case 1:
+					inputan = 0;
+					enmh -= 20;
+					if(enmh > 0) 
+					{
+						system("clear");
+						printf("Musuh melawan!\n");
+						sleep(1);
+						nyawa -= 20;
+						printf("Player kena!\n");
+					}
+					break;
+				case 2:
+					status = 1;
+					break;
+				default:
+					break;
+			}
 		}
 		if(status != 2) break;
 		sleep(1);
@@ -204,6 +216,7 @@ void* battle(void *arg)
 		status = 1;
 		sleep(1);
 	}
+	else status = 1;
 	inputan = 0;
 }
 
@@ -217,7 +230,7 @@ void* shop(void *arg)
     
     if(*value == NULL) *value = 0;
 	
-	while(nyawa != 0 || lapar != 0 || higen != 0)
+	while(nyawa > 0 || lapar > 0 || higen > 0)
 	{
 		system("clear");
 		printf("Shop Mode\n");
@@ -282,12 +295,10 @@ int main()
 	fstock = 10;
 	mxf = fstock;
 	
-	status = 1;
-	
 	err = pthread_create(&(tid[4]), NULL, masuk, NULL); //membuat thread
 	err = pthread_create(&(tid[5]), NULL, pemandian, NULL); //membuat thread
 	
-	while(nyawa != 0 || lapar != 0 || higen != 0)
+	while(nyawa > 0 || lapar > 0 || higen > 0)
 	{
 		switch(status)
 		{
@@ -306,7 +317,10 @@ int main()
 			default:
 				break;
 		}
+		if(nyawa <= 0 || lapar <= 0 || higen <= 0) status = 0;
 	}
+	
+	printf("Game over...\n");
 	
 	return 0;
 }
