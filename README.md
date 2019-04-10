@@ -36,6 +36,46 @@
     
     Belum diketahui cara untuk membetulkan
 
+## #4 Menyimpan Proses
+### Pembuatan
+* Menggunakan 2 thread
+
+    Thread pertama berisi perintah perintah untuk:
+    * Menghapus FolderProses yang sudah ada
+    * Membuat FolderProses
+    * Mengambil proses yang berjalan dan menyimpannya dalam file.txt
+    * Mengkompres file dalam bentuk zip
+    
+    ```c
+    void *tulis(int n){
+    //Apus
+    strcpy(str, "");    
+    sprintf(str, "rm ~/Documents/FolderProses%d -dr", n);
+    system(str);
+
+    // Membuat FolderProses
+    strcpy(str, "");
+    sprintf(str, "mkdir ~/Documents/FolderProses%d", n);
+    system(str);
+
+    // Mengambil isi aux
+    strcpy(str, "");
+    sprintf(str, "ps aux --no-heading | head -10 > ~/Documents/FolderProses%d/SimpanProses%d.txt", n, n);
+    system(str);
+
+    // Ngezip
+    strcpy(str, "");
+    sprintf(str, "zip -qmj ~/Documents/FolderProses%d/KompresProses%d ~/Documents/FolderProses%d/SimpanProses%d.txt", n, n, n, n);
+    system(str);
+    }
+    ```
+    Menggunakan string agar dapat diiterasi `file-n` menjadi `file1` dan `file2` menggunakan `sprintf`
+    
+    
+
+
+
+
 ## #5 Tamagochi warfare (ini kenapa ada di soal shift?)
 ### Pembuatan
 * Input without enter!?!
