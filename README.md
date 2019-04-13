@@ -84,7 +84,7 @@
 
 * Membuat Server penjual dan pembeli
 
-    * Menggunakan template server
+    * Menggunakan template server untuk penjual dan pembeli
     ```c
     int main(int argc, char const *argv[]) {
     int server_fd, new_socket, valread;
@@ -123,6 +123,47 @@
         exit(EXIT_FAILURE);
     }
     ```
+    * Menggunakan template shared memmory
+    ```c
+    key_t key = 1234;
+    int *barang;
+
+    int shmid = shmget(key, sizeof(int), IPC_CREAT | 0666);
+    barang = shmat(shmid, NULL, 0);
+    ```
+    * Fungsi main
+
+    Dalam server jual terdapat thread yang berjalan untuk menerima input dari client jual dan jika string adalah 'tambah' maka akan menambah nilai `stok barang`
+
+    Server beli memiliki isi yang sama, yang membedakan hanyalah pada server beli menerima dari client beli. Dan jika string yang diterima adalah 'beli' maka akan mengurangi nilai stock melalui shared memmory
+    ```c
+    iret1 = pthread_create( &thread1, NULL, cetak, (void*) barang);
+
+    while(1) {
+    valread = read( new_socket , buffer, 1024);
+    if(iret1)
+    {
+        fprintf(stderr,"Error - pthread_create() return code: %d\n",iret2);
+        exit(EXIT_FAILURE);
+    }
+    if(strcmp(buffer, tambah)==0) {
+        *barang++;
+    }
+    memset(buffer,0,1024);
+    }
+    ```
+    * Fungsi untuk mencetak stock
+    
+    Fungsi berikut dijadikan thread didalam server penjual untuk mengeluarkan output nilai stock setiap 5 detik sekali
+    ```c
+    void *cetak(void *c) {
+    int *barang;
+    barang=(void *)c;
+    printf("Stock barang = %d\n", *barang); 
+    sleep(5);
+    }
+    ```
+
 
 ## #3 Agmal vs Siraj
 ### Pembuatan
