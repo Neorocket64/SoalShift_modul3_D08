@@ -45,7 +45,7 @@
 
     client jual dan server jual dihubungkan dengan diberi `PORT 9090`
 
-    client beli dan server beli dihubungkan dengan diberi `PORT 8080' 
+    client beli dan server beli dihubungkan dengan diberi `PORT 8080` 
     ```c
     int main(int argc, char const *argv[]) {
     struct sockaddr_in address;
