@@ -105,9 +105,10 @@
 
     Jika user memilih `1` Maka program akan mengeluarkan output wakeUpStatus dan SpiritStatus
 
-    Jika user memilih `2` maka program akan menjalankan thread agmal
+    Jika user memilih `2` maka program akan menjalankan thread agmal. Jika `count` (penghitung agmal) sudah 3 kali maka program mengeluarkan pesan iraj di disable
 
-    Jika user memilih `3` maka program akan menjalankan thread iraj
+    Jika user memilih `3` maka program akan menjalankan thread iraj. Jika `counter` (penghitung iraj) sudah 3 kali maka program mengeluarkan pesan agamal di disable
+
 
 ## #4 Menyimpan Proses
 ### Pembuatan
