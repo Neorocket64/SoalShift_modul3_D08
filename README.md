@@ -36,6 +36,12 @@
     
     Belum diketahui cara untuk membetulkan
 
+
+## #3 Agmal vs Siraj
+### Pembuatan
+* 
+
+
 ## #4 Menyimpan Proses
 ### Pembuatan
 * Menggunakan 2 thread
@@ -71,9 +77,43 @@
     ```
     Menggunakan string agar dapat diiterasi `file-n` menjadi `file1` dan `file2` menggunakan `sprintf`
     
-    
 
+    ```c
+    void *unzip(int n){
+    strcpy(str, "");
+    sprintf(str, "unzip -qd ~/Documents/FolderProses%d ~/Documents/FolderProses%d/KompresProses%d.zip", n, n, n);
+    system(str);
+    }
+    ```
+    Kemudian dibuat thread kedua untuk melakukan extract. Digunakan perintah `unzip`.
 
+* Fungsi Main
+    Didalam fungsi main berisi perintah untuk menjalankan kedua thread tadi dan digunakan iterasi agar membuat 2 folder dan file yang berbeda.
+    ```c
+    int x=2;
+
+    for(int i=1; i<=x; i++){
+        pthread_create(&tid[x], NULL, &tulis, i);
+        pthread_join(tid[x], NULL);
+    }   
+
+    printf("Menunggu 15 detik untuk mengkompress...\n");
+    for(int a=1; a<=15; a++){
+        printf("%d\n", a);
+        sleep(1);
+    }
+    printf("Proses Selesai!\n");
+
+    for(int j=1; j<=x; j++){
+        pthread_create(&tid[j], NULL, &unzip, j);
+        pthread_join(tid[j], NULL);
+    }
+    ```
+    Diawal adalah untuk membuat thread pertama untuk membuat file, dan mengcompress
+
+    Kemudian menampilkan loading selama 15 detik
+
+    Setelah itu thread yang berfungsi mengextract dijalankan
 
 
 ## #5 Tamagochi warfare
