@@ -37,6 +37,53 @@
     Belum diketahui cara untuk membetulkan
 
 
+## #2 Penjual & Pembeli
+### Pembuatan
+* Membuat Client penjual dan pembeli
+    
+    Menggunakan template client untuk menghubungkan dengan server
+
+    client jual dan server jual dihubungkan dengan diberi `PORT 9090`
+
+    client beli dan server beli dihubungkan dengan diberi `PORT 8080' 
+    ```c
+    int main(int argc, char const *argv[]) {
+    struct sockaddr_in address;
+    int sock = 0, valread;
+    struct sockaddr_in serv_addr;
+    char buffer[1024] = {0};
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        printf("\n Socket creation error \n");
+        return -1;
+    }
+
+    memset(&serv_addr, '0', sizeof(serv_addr));
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(PORT);
+    
+    if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0) {
+        printf("\nInvalid address/ Address not supported \n");
+        return -1;
+    }
+
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+        printf("\nConnection Failed \n");
+        return -1;
+    }
+    ```
+    Didalam client jual diberi beberapa line of code untuk menerima input dan mengirimkan ke server jual
+    ```c
+    char jual[10];
+    while(1){
+        scanf("%s", jual);
+        send(sock, jual, strlen(jual), 0 );
+    }
+    ```
+    Didalam client beli juga diberi line of code yang sama untuk menerima input pembelian dan mengirim ke server beli
+
+
+
 ## #3 Agmal vs Siraj
 ### Pembuatan
 * Membuat 2 thread `Agmal` dan `Iraj`
