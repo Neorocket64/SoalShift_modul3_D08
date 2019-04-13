@@ -40,7 +40,12 @@
 ## #3 Agmal vs Siraj
 ### Pembuatan
 * Membuat 2 thread `Agmal` dan `Iraj`
+
     Thread pertama bernama Agmal yang tugas utamanya akan mengubah variabel global `wakeUp_Status`
+
+    Agmal akan berhenti pada saat Iraj dijalankan 3 kali, maka digunakan variabel global `counter` dan `count` untuk menandai sudah berapa kali dijalankannya suatu fitur
+
+    Thread kedua bernama Iraj sama persis dengan Agmal, yang membedakan hanyalah variabel yang diubah yaitu 'Spirit_Status'
 
     ```c
     void *agmal(){
@@ -62,7 +67,47 @@
     }
     ```
 
+* Fungsi Main
 
+    ```c
+        int pili;  
+        while(1){
+            printf("1. All Status\n");
+            printf("2. Agmal Ayo Bangun\n");
+            printf("3. Iraj Ayo Tidur\n>>> ");
+            scanf("%d", &pili);
+            
+            if(pili == 1){    
+                printf("WakeUp_Status = %d\n", wakeUp_Status);
+                printf("Spirit_Status = %d\n\n\n", Spirit_Status);
+            }
+            else if(pili == 2){
+                stat = 2;
+                count++;
+                if(count == 3 ){
+                    printf("Fitur Iraj Ayo Tidur disabled 10 s\n\n");
+                }
+                pthread_create(&thread1, NULL, agmal, NULL);
+                pthread_join(thread1, NULL);
+            }
+            else if(pili == 3){
+                stat = 3;
+                counter++;
+                if(counter == 3 ){
+                    printf("Agmal Ayo Bangun disabled 10 s\n\n");
+                }
+                pthread_create(&thread2, NULL, iraj, NULL);
+                pthread_join(thread2, NULL);
+            }
+        }
+    ```
+    Memberi pilihan fitur, dan meminta input dari user untuk menentukan pilihan yang mana
+
+    Jika user memilih `1` Maka program akan mengeluarkan output wakeUpStatus dan SpiritStatus
+
+    Jika user memilih `2` maka program akan menjalankan thread agmal
+
+    Jika user memilih `3` maka program akan menjalankan thread iraj
 
 ## #4 Menyimpan Proses
 ### Pembuatan
