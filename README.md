@@ -4,8 +4,8 @@
 ### Pembuatan
 * Mengurutkan variabel:
     ```c
-	  int o, p, smt;
-	  for(o = 0; o < i - 1; o++)
+      int o, p, smt;
+      for(o = 0; o < i - 1; o++)
     {
         for(p = i - 1; p > o; p--)
         {
@@ -39,7 +39,29 @@
 
 ## #3 Agmal vs Siraj
 ### Pembuatan
-* 
+* Membuat 2 thread `Agmal` dan `Iraj`
+    Thread pertama bernama Agmal yang tugas utamanya akan mengubah variabel global `wakeUp_Status`
+
+    ```c
+    void *agmal(){
+        if(stat == 2){
+        if(counter >= 3){
+            sleep(5);
+            counter = 0;            
+        }
+        wakeUp_Status += 15;
+
+        if(wakeUp_Status >= 100){
+        printf("Agmal Terbangun,mereka bangun pagi dan berolahraga\n\n");
+        exit(0);
+        }
+
+        else if(count <3)
+            printf("WakeUp_Status = %d\n\n", wakeUp_Status);        
+        }
+    }
+    ```
+
 
 
 ## #4 Menyimpan Proses
@@ -88,6 +110,7 @@
     Kemudian dibuat thread kedua untuk melakukan extract. Digunakan perintah `unzip`.
 
 * Fungsi Main
+    
     Didalam fungsi main berisi perintah untuk menjalankan kedua thread tadi dan digunakan iterasi agar membuat 2 folder dan file yang berbeda.
     ```c
     int x=2;
@@ -132,26 +155,26 @@
   
   ```c
   while(nyawa > 0 || lapar > 0 || higen > 0)
-	{
-		switch(status)
-		{
-			case 1:
-				err = pthread_create(&(tid[status]), NULL, standby, NULL); //membuat thread
-				pthread_join(tid[status],NULL);
-				break;
-			case 2:
-				err = pthread_create(&(tid[status]), NULL, battle, NULL); //membuat thread
-				pthread_join(tid[status],NULL);
-				break;
-			case 3:
-				err = pthread_create(&(tid[status]), NULL, shop, NULL); //membuat thread
-				pthread_join(tid[status],NULL);
-				break;
-			default:
-				break;
-		}
-		if(nyawa <= 0 || lapar <= 0 || higen <= 0) status = 0;
-	}
+    {
+        switch(status)
+        {
+            case 1:
+                err = pthread_create(&(tid[status]), NULL, standby, NULL); //membuat thread
+                pthread_join(tid[status],NULL);
+                break;
+            case 2:
+                err = pthread_create(&(tid[status]), NULL, battle, NULL); //membuat thread
+                pthread_join(tid[status],NULL);
+                break;
+            case 3:
+                err = pthread_create(&(tid[status]), NULL, shop, NULL); //membuat thread
+                pthread_join(tid[status],NULL);
+                break;
+            default:
+                break;
+        }
+        if(nyawa <= 0 || lapar <= 0 || higen <= 0) status = 0;
+    }
   ```
   Ini dilakukan karena fungsi tersebut HARUS berjalan satu per 3 set!
   
@@ -162,8 +185,8 @@
   Ada 2 thread yang penting untuk berjalan, input, dan `bath timer`
   
   ```c
-  	err = pthread_create(&(tid[4]), NULL, masuk, NULL); //membuat thread
-  	err = pthread_create(&(tid[5]), NULL, pemandian, NULL); //membuat thread
+    err = pthread_create(&(tid[4]), NULL, masuk, NULL); //membuat thread
+    err = pthread_create(&(tid[5]), NULL, pemandian, NULL); //membuat thread
   ```
     
 * SLEEP
