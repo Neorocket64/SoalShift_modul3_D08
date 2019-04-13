@@ -76,9 +76,9 @@
 
 
 
-## #5 Tamagochi warfare (ini kenapa ada di soal shift?)
+## #5 Tamagochi warfare
 ### Pembuatan
-* Input without enter!?!
+* Input tanpa enter
 
   Sumber : https://stackoverflow.com/questions/1798511/how-to-avoid-pressing-enter-with-getchar
   
@@ -86,16 +86,71 @@
   
   ada suatu manipulasi terminal untuk menangkap input (`getchar`) dan value `char` akan dijadikan `int` dalam variabel lain
   
-* SLEEP
+* Thread calling and while() breaking
 
-  ![bottom text](reference/sleep.png "Sleep pls! -Mona")
+  Kita memiliki variabel `status` yang akan diassign kepada `thread id` untuk setiap fungsi;
   
-  While loop is inevitable supaya terasa dinamis.
+  ```c
+  while(nyawa > 0 || lapar > 0 || higen > 0)
+	{
+		switch(status)
+		{
+			case 1:
+				err = pthread_create(&(tid[status]), NULL, standby, NULL); //membuat thread
+				pthread_join(tid[status],NULL);
+				break;
+			case 2:
+				err = pthread_create(&(tid[status]), NULL, battle, NULL); //membuat thread
+				pthread_join(tid[status],NULL);
+				break;
+			case 3:
+				err = pthread_create(&(tid[status]), NULL, shop, NULL); //membuat thread
+				pthread_join(tid[status],NULL);
+				break;
+			default:
+				break;
+		}
+		if(nyawa <= 0 || lapar <= 0 || higen <= 0) status = 0;
+	}
+  ```
+  Ini dilakukan karena fungsi tersebut HARUS berjalan satu per 3 set!
+  
+  Karena infinite loop, maka perlu sebuah syarat agar bisa `break` / keluar dari loop.
+  
+  Setelah loop selesai, baru suatu fungsi bisa exit.
+  
+  Ada 2 thread yang penting untuk berjalan, input, dan `bath timer`
+  
+  ```c
+  	err = pthread_create(&(tid[4]), NULL, masuk, NULL); //membuat thread
+  	err = pthread_create(&(tid[5]), NULL, pemandian, NULL); //membuat thread
+  ```
+    
+* SLEEP
   
   Dilakukan sebuah fungsi `sleep()` (bawaan, dalam satuan detik) untuk menunggu menuju loop lagi.
   
+  Buat apakah sleep? supaya beberapa variabel bisa `increment` / `decrement` selama (suatu) detik;
+  
+  ```c
+  kelaparan--;
+  kebusukan--;
+  hidup--;
+  ```
+  
+  Selain itu, digunakan untuk hapus dan update layar (aka `system("clear");`).
+  
 * Stok
-
-  ![bottom text](reference/stack.gif "Spamming!!!")
   
   Memory sharing dilakukan agar program Penjual dan Pembeli bisa satu variabel (hanya satu variabel, `stock`)
+  
+  ```c
+  key_t key = 1234;
+    int *value;
+
+    int shmid = shmget(key, sizeof(int), IPC_CREAT | 0666);
+    value = shmat(shmid, NULL, 0);
+  -------------------------------------------------------------------- //insert code here
+  shmdt(value);
+  shmctl(shmid, IPC_RMID, NULL); //close value (for terminate memory)
+  ```
